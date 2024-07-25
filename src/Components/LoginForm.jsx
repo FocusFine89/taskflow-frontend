@@ -2,14 +2,34 @@ import { Button, Card, Container } from "react-bootstrap";
 import "../css/LoginForm.css";
 import { Link } from "react-router-dom";
 import { Facebook, Google } from "react-bootstrap-icons";
+import { useEffect, useState } from "react";
 const LoginForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  useEffect(() => {}, []);
   return (
     <Container className="d-flex justify-content-center align-items-center m-0">
       <Card style={{ width: "30rem", height: "30rem" }}>
         <Card.Body className="text-center my-3 d-flex flex-column">
           <Card.Title className="fs-2 fw-bold">Sign in</Card.Title>
-          <input type="email" placeholder="Email" className="my-4 p-2" />
-          <input type="password" placeholder="Password" className="mb-4 p-2" />
+          <input
+            type="email"
+            placeholder="Email"
+            className="my-4 p-2"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            className="mb-4 p-2"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
           <Button variant="dark" className="p-2 mb-2">
             LOGIN
           </Button>
