@@ -5,9 +5,11 @@ import SideBar from "./Components/SideBar";
 import LoginForm from "./Components/LoginForm";
 import { useState } from "react";
 import RegisterForm from "./Components/RegisterForm";
+import HomePage from "./Components/HomePage";
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(1);
+
   return (
     <div className="App d-flex overflow-x-hidden">
       <BrowserRouter>
@@ -15,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/auth/login" element={<LoginForm />} />
           <Route path="/auth/register" element={<RegisterForm />} />
+          <Route path="/" element={<HomePage />} />
         </Routes>
       </BrowserRouter>
     </div>
