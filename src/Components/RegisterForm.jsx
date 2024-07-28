@@ -1,18 +1,31 @@
 import { Button, Card, Container } from "react-bootstrap";
 import { Facebook, Google } from "react-bootstrap-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../css/LoginForm.css";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { registerAction } from "../redux/actions/registerAction";
 
 const RegisterForm = () => {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log("ciao");
-  }, []);
+  useEffect(() => {}, []);
+
+  const registerHandle = async () => {
+    const userObj = {
+      name: name,
+      surname: surname,
+      email: email,
+      password: password,
+    };
+    await dispatch(registerAction(userObj));
+    navigate("/auth/login");
+  };
 
   return (
     <Container className="d-flex justify-content-center align-items-center m-0">
@@ -55,7 +68,7 @@ const RegisterForm = () => {
               setPassword(e.target.value);
             }}
           />
-          <Button variant="dark" className="p-2 mb-2">
+          <Button variant="dark" className="p-2 mb-2" onClick={registerHandle}>
             REGISTER
           </Button>
           <hr />
