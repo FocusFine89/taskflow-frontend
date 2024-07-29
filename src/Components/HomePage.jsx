@@ -106,63 +106,103 @@ const HomePage = () => {
               </Card.Title>
               <Card.Text>
                 {tasks.length > 0 &&
-                  tasks.map((task) => {
-                    return (
-                      <Card key={task.id} className="my-3 flex-column-reverse">
-                        <div className="m-3 text-end">
-                          <Button
-                            variant="outline-success"
-                            onClick={() => {
-                              handleCompleteTask(task.name, task.date, task.id);
-                            }}
-                            className="me-3"
-                          >
-                            <CheckCircle size={20} />
-                          </Button>
+                  tasks
+                    .filter((task) => task.done === false)
+                    .map((task) => {
+                      return (
+                        <Card
+                          key={task.id}
+                          className="my-3 flex-column-reverse"
+                        >
+                          <div className="m-3 text-end">
+                            <Button
+                              variant="outline-success"
+                              onClick={() => {
+                                handleCompleteTask(
+                                  task.name,
+                                  task.date,
+                                  task.id
+                                );
+                              }}
+                              className="me-3"
+                            >
+                              <CheckCircle size={20} />
+                            </Button>
 
-                          <Button
-                            variant="outline-danger"
-                            className="me-3"
-                            onClick={() => {
-                              dispatch(deleteTasks(task.id));
-                            }}
-                          >
-                            {" "}
-                            <Trash size={20} />{" "}
-                          </Button>
-
-                          <Button variant="outline-warning">
-                            {" "}
-                            <Pen size={20} />{" "}
-                          </Button>
-                        </div>
-
-                        <Card.Body className="d-flex justify-content-between fs-5">
-                          <div>
-                            <Card.Text className="fw-bold">
-                              {task.name}
-                            </Card.Text>
-                            <Card.Text className="fs-6">
+                            <Button
+                              variant="outline-danger"
+                              className="me-3"
+                              onClick={() => {
+                                dispatch(deleteTasks(task.id));
+                              }}
+                            >
                               {" "}
-                              <Badge bg="secondary">{task.date}</Badge>{" "}
-                            </Card.Text>
-                            {task.done && (
-                              <Card.Text className="fs-6 text-success">
-                                done
-                              </Card.Text>
-                            )}
+                              <Trash size={20} />{" "}
+                            </Button>
+
+                            <Button variant="outline-warning">
+                              {" "}
+                              <Pen size={20} />{" "}
+                            </Button>
                           </div>
-                        </Card.Body>
-                      </Card>
-                    );
-                  })}
+
+                          <Card.Body className="d-flex justify-content-between fs-5">
+                            <div>
+                              <Card.Text className="fw-bold">
+                                {task.name}
+                              </Card.Text>
+                              <Card.Text className="fs-6">
+                                {" "}
+                                <Badge bg="secondary">{task.date}</Badge>{" "}
+                              </Card.Text>
+                              {task.done && (
+                                <Card.Text className="fs-6 text-success">
+                                  done
+                                </Card.Text>
+                              )}
+                            </div>
+                          </Card.Body>
+                        </Card>
+                      );
+                    })}
               </Card.Text>
             </Card.Body>
           </Card>
         </Col>
+        {/* Grafico delle Tasks */}
         <Col xs={12} md={12} lg={4}>
-          <Card className="task-card task-card-body border-0 mt-3">
+          <Card className="task-card task-card-body border-0 mt-3 d-flex justify-content-center">
             <Card.Body>{filteredTask()}</Card.Body>
+          </Card>
+        </Col>
+        {/* Recent Activities */}
+        <Col xs={12} md={12} lg={4}>
+          <Card className="mt-3 task-card task-card-body border-0 overflow-y-auto">
+            <Card.Body>
+              <Card.Title className="fw-bold fs-3">Tasks Recenti</Card.Title>
+              {tasks
+                .filter((task) => task.done === true)
+                .map((task) => {
+                  return (
+                    <div className="d-flex flex-row justify-content-between my-3">
+                      <Card className="p-1 card-recent-activities me-3">
+                        <Card.Text className="fw-bold fs-5">
+                          {task.name}
+                        </Card.Text>
+                      </Card>
+                      <Button
+                        variant="outline-danger"
+                        onClick={() => {
+                          dispatch(deleteTasks(task.id));
+                        }}
+                      >
+                        {" "}
+                        <Trash size={20} />{" "}
+                      </Button>
+                    </div>
+                  );
+                })}
+            </Card.Body>
           </Card>
         </Col>
       </Row>

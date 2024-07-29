@@ -11,3 +11,7 @@
   width: calc(100vw - 80px);
   margin-left: 80px;
 }
+
+.card-recent-activities {
+  width: 100%;
+}
