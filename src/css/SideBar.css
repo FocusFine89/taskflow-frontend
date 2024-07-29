@@ -1,3 +1,8 @@
 .hkaJrM {
   height: 100vh !important;
+
+  position: absolute !important;
+  left: 0;
+  top: 0;
+  z-index: 1000;
 }

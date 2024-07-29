@@ -1,0 +1,13 @@
+.task-card {
+  max-width: 25rem;
+  max-height: 40rem;
+}
+
+.task-card-body {
+  background-color: rgb(240 240 240);
+}
+
+.container-card {
+  width: calc(100vw - 80px);
+  margin-left: 80px;
+}
