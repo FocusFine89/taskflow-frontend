@@ -22,11 +22,13 @@ import "../css/HomePage.css";
 
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import { useNavigate } from "react-router-dom";
 Chart.register(ArcElement, Tooltip, Legend);
 
 const HomePage = () => {
   const dispatch = useDispatch();
   const tasks = useSelector((state) => state.tasks.content);
+  const navigate = useNavigate();
 
   //Modifica task done
   const handleCompleteTask = (nome, data, id) => {
@@ -59,7 +61,7 @@ const HomePage = () => {
     console.log();
     await dispatch(addTasks(taskObj));
     setNomeTask("");
-    setDataTask(null);
+    setDataTask("");
     handleClose();
   };
 
@@ -85,8 +87,13 @@ const HomePage = () => {
     return <Doughnut data={data} />;
   };
 
+  //Funzione che rimanda alla pagina di registrazione
+
   //Lo useEffect al caricamento del componente fa una get sulla lista delle Task per tenerla aggiornata
   useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/auth/register");
+    }
     dispatch(getTasks());
     console.log(tasks);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -95,7 +102,7 @@ const HomePage = () => {
   return (
     <Container fluid className="container-card">
       <Row>
-        <Col xs={12} md={12} lg={4} className="mt-3">
+        <Col xs={12} md={12} lg={3} className="mt-3">
           <Card className="task-card border-0 overflow-auto">
             <Card.Body className="task-card-body">
               <Card.Title className="fs-3 fw-bold d-flex justify-content-between">
@@ -105,6 +112,8 @@ const HomePage = () => {
                 </Button>
               </Card.Title>
               <Card.Text>
+                {/* Task ancora da fare per oggi */}
+                {/* TODO aggiungere il filtro per filtrare le task con la data di oggi e anche senza data */}
                 {tasks.length > 0 &&
                   tasks
                     .filter((task) => task.done === false)
@@ -170,7 +179,7 @@ const HomePage = () => {
           </Card>
         </Col>
         {/* Grafico delle Tasks */}
-        <Col xs={12} md={12} lg={4}>
+        <Col xs={12} md={12} lg={3}>
           <Card className="task-card task-card-body border-0 mt-3 d-flex justify-content-center">
             <Card.Body>{filteredTask()}</Card.Body>
           </Card>
@@ -186,7 +195,7 @@ const HomePage = () => {
                   return (
                     <div className="d-flex flex-row justify-content-between my-3">
                       <Card className="p-1 card-recent-activities me-3">
-                        <Card.Text className="fw-bold fs-5">
+                        <Card.Text className="fw-bold fs-5 p-2">
                           {task.name}
                         </Card.Text>
                       </Card>
@@ -206,6 +215,7 @@ const HomePage = () => {
           </Card>
         </Col>
       </Row>
+      <hr />
 
       {/* Modale per la creazione di Task */}
       <Modal show={show} onHide={handleClose}>
