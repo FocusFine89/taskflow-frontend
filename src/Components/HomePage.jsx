@@ -20,15 +20,34 @@ import {
 import { CheckCircle, Pen, PlusCircle, Trash } from "react-bootstrap-icons";
 import "../css/HomePage.css";
 
-import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
-import { Doughnut } from "react-chartjs-2";
+import {
+  Chart,
+  ArcElement,
+  Tooltip,
+  Legend,
+  Title,
+  BarElement,
+  LinearScale,
+  CategoryScale,
+} from "chart.js";
+import { Bar, Doughnut } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
-Chart.register(ArcElement, Tooltip, Legend);
+import { getHabits } from "../redux/actions/habitsAction";
+Chart.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title
+);
 
 const HomePage = () => {
   const dispatch = useDispatch();
   const tasks = useSelector((state) => state.tasks.content);
   const navigate = useNavigate();
+  const habits = useSelector((state) => state.habits.content);
 
   //Modifica task done
   const handleCompleteTask = (nome, data, id) => {
@@ -65,7 +84,7 @@ const HomePage = () => {
     handleClose();
   };
 
-  //Funzione che filtra le task fatte
+  //Funzione per il Chart delle Task
   const filteredTask = () => {
     const completedTasks = tasks.filter((task) => task.done === true).length;
     const pendingTasks = tasks.filter((task) => task.done === false).length;
@@ -87,7 +106,48 @@ const HomePage = () => {
     return <Doughnut data={data} />;
   };
 
-  //Funzione che rimanda alla pagina di registrazione
+  //Funzione per il Chart delle Habits
+  const barChartHabits = () => {
+    const habitsDays = habits.map((habit) => habit.daysDone);
+    const habitsName = habits.map((habit) => habit.name);
+
+    const data = {
+      labels: habitsName,
+      datasets: [
+        {
+          label: "Giorni completati",
+          data: habitsDays,
+          borderWidth: 1,
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+          ],
+        },
+      ],
+    };
+    const options = {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: "top",
+        },
+        title: {
+          display: true,
+          text: "Habits day Tracker",
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    };
+    return <Bar data={data} options={options} />;
+  };
 
   //Lo useEffect al caricamento del componente fa una get sulla lista delle Task per tenerla aggiornata
   useEffect(() => {
@@ -96,6 +156,7 @@ const HomePage = () => {
     }
     dispatch(getTasks());
     console.log(tasks);
+    dispatch(getHabits());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -195,8 +256,11 @@ const HomePage = () => {
                   return (
                     <div className="d-flex flex-row justify-content-between my-3">
                       <Card className="p-1 card-recent-activities me-3">
-                        <Card.Text className="fw-bold fs-5 p-2">
+                        <Card.Text className="fw-bold fs-5 p-2 ">
                           {task.name}
+                        </Card.Text>
+                        <Card.Text className="text-success ms-2">
+                          {task.done && "done"}
                         </Card.Text>
                       </Card>
                       <Button
@@ -212,6 +276,29 @@ const HomePage = () => {
                   );
                 })}
             </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+      <hr />
+      {/* Parte Habits */}
+      <Row>
+        <Col xs={12} md={12} lg={6} className="mb-3">
+          <Card className="border-0 ">
+            <Card.Body className="task-card-body">
+              <Card.Title className="fw-bold fs-3">Habit Tracker</Card.Title>
+              {habits.map((habit) => {
+                return (
+                  <Card className="p-3" key={habit.id}>
+                    <Card.Text className="fs-4">{habit.name}</Card.Text>
+                  </Card>
+                );
+              })}
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col xs={12} md={12} lg={4} className="d-xs-none d-lg-block">
+          <Card className="border-0 task-card-body">
+            <Card.Body>{barChartHabits()} </Card.Body>
           </Card>
         </Col>
       </Row>

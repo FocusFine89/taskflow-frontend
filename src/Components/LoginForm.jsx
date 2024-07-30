@@ -28,6 +28,7 @@ const LoginForm = () => {
     if (localStorage.getItem("token")) {
       navigate("/");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <Container className="d-flex justify-content-center align-items-center m-0">
