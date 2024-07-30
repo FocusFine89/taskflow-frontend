@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="App d-flex overflow-hidden position-relative">
       <BrowserRouter>
-        <SideBar />
+        {localStorage.getItem("token") && <SideBar />}
         <Routes>
           <Route path="/auth/login" element={<LoginForm />} />
           <Route path="/auth/register" element={<RegisterForm />} />
