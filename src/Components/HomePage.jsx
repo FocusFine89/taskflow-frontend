@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  Alert,
   Badge,
   Button,
   Card,
@@ -285,7 +286,7 @@ const HomePage = () => {
         <Col xs={12} md={12} lg={6} className="mb-3">
           <Card className="border-0 ">
             <Card.Body className="task-card-body">
-              <Card.Title className="fw-bold fs-3">Habit Tracker</Card.Title>
+              <Card.Title className="fw-bold fs-3">Habits Tracker</Card.Title>
               {habits.map((habit) => {
                 return (
                   <Card className="p-3" key={habit.id}>
