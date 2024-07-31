@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  Alert,
   Badge,
   Button,
   Card,
@@ -17,6 +16,7 @@ import {
   completeTask,
   deleteTasks,
   getTasks,
+  updateTask,
 } from "../redux/actions/getAllTasksAction";
 import { CheckCircle, Pen, PlusCircle, Trash } from "react-bootstrap-icons";
 import "../css/HomePage.css";
@@ -49,7 +49,8 @@ const HomePage = () => {
   const tasks = useSelector((state) => state.tasks.content);
   const navigate = useNavigate();
   const habits = useSelector((state) => state.habits.content);
-
+  const [idTask, setIdTask] = useState(0);
+  const [update, setUpdate] = useState(false);
   //Modifica task done
   const handleCompleteTask = (nome, data, id) => {
     const doneTask = {
@@ -63,12 +64,23 @@ const HomePage = () => {
   //Funzioni per il modale di creazione Task
   const [show, setShow] = useState(false);
   const [nomeTask, setNomeTask] = useState("");
-  const [dataTask, setDataTask] = useState(null);
+  const [dataTask, setDataTask] = useState("");
+  const [updateNameTask, setUpdateNameTask] = useState("");
+  const [updateDataTask, setUpdateDataTask] = useState("");
 
   const handleClose = () => {
     setShow(false);
   };
   const handleShow = () => {
+    setUpdate(false);
+    setShow(true);
+  };
+
+  const handleShowUpdate = (nome, data, id) => {
+    setUpdate(true);
+    setUpdateNameTask(nome);
+    setUpdateDataTask(data);
+    setIdTask(id);
     setShow(true);
   };
 
@@ -82,6 +94,20 @@ const HomePage = () => {
     await dispatch(addTasks(taskObj));
     setNomeTask("");
     setDataTask("");
+    handleClose();
+  };
+
+  //Funzione per modificare le Task
+  const handleUpdateTask = async () => {
+    const taskObj = {
+      name: updateNameTask,
+      date: updateDataTask,
+      done: false,
+    };
+    await dispatch(updateTask(taskObj, idTask));
+    setUpdateNameTask("");
+    setUpdateDataTask("");
+    setIdTask(0);
     handleClose();
   };
 
@@ -178,7 +204,11 @@ const HomePage = () => {
                 {/* TODO aggiungere il filtro per filtrare le task con la data di oggi e anche senza data */}
                 {tasks.length > 0 &&
                   tasks
-                    .filter((task) => task.done === false)
+                    .filter(
+                      (task) =>
+                        task.done === false &&
+                        (!task.date || task.date === "2024-07-31")
+                    )
                     .map((task) => {
                       return (
                         <Card
@@ -211,7 +241,12 @@ const HomePage = () => {
                               <Trash size={20} />{" "}
                             </Button>
 
-                            <Button variant="outline-warning">
+                            <Button
+                              variant="outline-warning"
+                              onClick={() => {
+                                handleShowUpdate(task.name, task.date, task.id);
+                              }}
+                            >
                               {" "}
                               <Pen size={20} />{" "}
                             </Button>
@@ -283,13 +318,18 @@ const HomePage = () => {
       <hr />
       {/* Parte Habits */}
       <Row>
-        <Col xs={12} md={12} lg={6} className="mb-3">
+        <Col
+          xs={12}
+          md={12}
+          lg={6}
+          className="mb-3 habits-card overflow-y-auto"
+        >
           <Card className="border-0 ">
             <Card.Body className="task-card-body">
               <Card.Title className="fw-bold fs-3">Habits Tracker</Card.Title>
               {habits.map((habit) => {
                 return (
-                  <Card className="p-3" key={habit.id}>
+                  <Card className="p-3 mt-3" key={habit.id}>
                     <Card.Text className="fs-4">{habit.name}</Card.Text>
                   </Card>
                 );
@@ -298,8 +338,10 @@ const HomePage = () => {
           </Card>
         </Col>
         <Col xs={12} md={12} lg={4} className="d-xs-none d-lg-block">
-          <Card className="border-0 task-card-body">
-            <Card.Body>{barChartHabits()} </Card.Body>
+          <Card className="border-0 habits-card ">
+            <Card.Body className="task-card-body">
+              {barChartHabits()}{" "}
+            </Card.Body>
           </Card>
         </Col>
       </Row>
@@ -308,7 +350,9 @@ const HomePage = () => {
       {/* Modale per la creazione di Task */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton className="border-0">
-          <Modal.Title>AGGIUNGI TASKS</Modal.Title>
+          <Modal.Title>
+            {!update ? "AGGIUNGI TASKS" : "MODIFICA TASK"}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body className="d-flex flex-column pb-0">
           <FloatingLabel
@@ -320,18 +364,22 @@ const HomePage = () => {
               type="text"
               placeholder="Nome Task"
               className="mb-3"
-              value={nomeTask}
+              value={!update ? nomeTask : updateNameTask}
               onChange={(e) => {
-                setNomeTask(e.target.value);
+                !update
+                  ? setNomeTask(e.target.value)
+                  : setUpdateNameTask(e.target.value);
               }}
             />
 
             <Form.Control
               type="date"
               className="py-1"
-              value={dataTask}
+              value={!update ? dataTask : updateDataTask}
               onChange={(e) => {
-                setDataTask(e.target.value);
+                !update
+                  ? setDataTask(e.target.value)
+                  : setUpdateDataTask(e.target.value);
               }}
             />
           </FloatingLabel>
@@ -340,7 +388,10 @@ const HomePage = () => {
           <Button variant="danger" onClick={handleClose}>
             CLOSE
           </Button>
-          <Button variant="success" onClick={handleAddTask}>
+          <Button
+            variant="success"
+            onClick={!update ? handleAddTask : handleUpdateTask}
+          >
             SAVE
           </Button>
         </Modal.Footer>
