@@ -18,7 +18,13 @@ import {
   getTasks,
   updateTask,
 } from "../redux/actions/getAllTasksAction";
-import { CheckCircle, Pen, PlusCircle, Trash } from "react-bootstrap-icons";
+import {
+  Check,
+  CheckCircle,
+  Pen,
+  PlusCircle,
+  Trash,
+} from "react-bootstrap-icons";
 import "../css/HomePage.css";
 
 import {
@@ -33,7 +39,7 @@ import {
 } from "chart.js";
 import { Bar, Doughnut } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
-import { getHabits } from "../redux/actions/habitsAction";
+import { checkHabits, getHabits } from "../redux/actions/habitsAction";
 Chart.register(
   ArcElement,
   Tooltip,
@@ -84,6 +90,16 @@ const HomePage = () => {
     setShow(true);
   };
 
+  //Funzione che ricava la data di oggi nel formato (yyyy-dd-mm)
+  const currentDate = () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const currentDay = `${year}-${month}-${day}`;
+    return currentDay;
+  };
+
   //Funzione per aggiungere Task
   const handleAddTask = async () => {
     const taskObj = {
@@ -114,7 +130,10 @@ const HomePage = () => {
   //Funzione per il Chart delle Task
   const filteredTask = () => {
     const completedTasks = tasks.filter((task) => task.done === true).length;
-    const pendingTasks = tasks.filter((task) => task.done === false).length;
+    const pendingTasks = tasks.filter(
+      (task) =>
+        task.done === false && (!task.date || task.date === currentDate())
+    ).length;
 
     const data = {
       labels: ["Completed", "Pending"],
@@ -176,6 +195,16 @@ const HomePage = () => {
     return <Bar data={data} options={options} />;
   };
 
+  //Funzione per aggiungere 1 giorno alla Habit fatta
+  const [habitDaysDone, setHabitsDaysDone] = useState(0);
+  const handleCheckHabits = (id) => {
+    setHabitsDaysDone(1);
+    const habitObj = {
+      daysDone: habitDaysDone,
+    };
+    dispatch(checkHabits(habitObj, id));
+  };
+
   //Lo useEffect al caricamento del componente fa una get sulla lista delle Task per tenerla aggiornata
   useEffect(() => {
     if (!localStorage.getItem("token")) {
@@ -184,6 +213,7 @@ const HomePage = () => {
     dispatch(getTasks());
     console.log(tasks);
     dispatch(getHabits());
+    currentDate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -207,7 +237,7 @@ const HomePage = () => {
                     .filter(
                       (task) =>
                         task.done === false &&
-                        (!task.date || task.date === "2024-07-31")
+                        (!task.date || task.date === currentDate())
                     )
                     .map((task) => {
                       return (
@@ -329,14 +359,27 @@ const HomePage = () => {
               <Card.Title className="fw-bold fs-3">Habits Tracker</Card.Title>
               {habits.map((habit) => {
                 return (
-                  <Card className="p-3 mt-3" key={habit.id}>
+                  <Card
+                    className="p-3 mt-3 d-flex flex-row justify-content-between"
+                    key={habit.id}
+                  >
                     <Card.Text className="fs-4">{habit.name}</Card.Text>
+                    <Button
+                      variant="outline-success"
+                      onClick={() => {
+                        handleCheckHabits(habit.id);
+                      }}
+                    >
+                      {" "}
+                      <Check size={20} />{" "}
+                    </Button>
                   </Card>
                 );
               })}
             </Card.Body>
           </Card>
         </Col>
+        {/* Grafico degli Habits */}
         <Col xs={12} md={12} lg={4} className="d-xs-none d-lg-block">
           <Card className="border-0 habits-card ">
             <Card.Body className="task-card-body">

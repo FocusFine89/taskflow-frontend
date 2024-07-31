@@ -1,4 +1,5 @@
 export const GET_HABITS = "GET_HABITS";
+
 export const getHabits = () => {
   return async (dispatch) => {
     try {
@@ -17,5 +18,24 @@ export const getHabits = () => {
     } catch (err) {
       console.log(err.message);
     }
+  };
+};
+
+export const checkHabits = (habitObj, id) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      let response = await fetch(`http://localhost:3001/habits/days/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify(habitObj),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        dispatch(getHabits());
+      }
+    } catch (err) {}
   };
 };
