@@ -1,8 +1,8 @@
 export const GET_HABITS = "GET_HABITS";
-const token = localStorage.getItem("token");
 export const getHabits = () => {
   return async (dispatch) => {
     try {
+      const token = localStorage.getItem("token");
       let response = await fetch("http://localhost:3001/habits", {
         method: "GET",
         headers: {
@@ -14,6 +14,8 @@ export const getHabits = () => {
         let habits = await response.json();
         dispatch({ type: GET_HABITS, payload: habits });
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 };

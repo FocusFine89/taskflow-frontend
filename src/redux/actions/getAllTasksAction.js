@@ -50,8 +50,12 @@ export const addTasks = (taskObj) => {
       });
       if (response.ok) {
         dispatch(getTasks());
+      } else {
+        throw new Error((await response.json()).message);
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   };
 };
 
@@ -87,7 +91,7 @@ export const updateTask = (taskObj, id) => {
         },
       });
       if (response.ok) {
-        dispatch(getTasks);
+        dispatch(getTasks());
       }
     } catch (error) {}
   };
