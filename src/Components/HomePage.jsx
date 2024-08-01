@@ -40,7 +40,7 @@ import {
 import { Bar, Doughnut } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
 import { checkHabits, getHabits } from "../redux/actions/habitsAction";
-import { deleteProjects, getProjects } from "../redux/actions/projectsAction";
+import { getProjects } from "../redux/actions/projectsAction";
 Chart.register(
   ArcElement,
   Tooltip,
@@ -225,9 +225,9 @@ const HomePage = () => {
       <Row>
         <Col xs={12} md={12} lg={3} className="mt-3">
           <Card className="task-card border-0 overflow-auto">
-            <Card.Body className="task-card-body">
-              <Card.Title className="fs-3 fw-bold d-flex justify-content-between">
-                Tasks per oggi{" "}
+            <Card.Body className="task-card-body rounded-5 rounded-end-0">
+              <Card.Title className="fs-3 d-flex justify-content-between">
+                TASK PER OGGI{" "}
                 <Button variant="transparent" onClick={handleShow}>
                   <PlusCircle size={25} />
                 </Button>
@@ -310,15 +310,15 @@ const HomePage = () => {
         </Col>
         {/* Grafico delle Tasks */}
         <Col xs={12} md={12} lg={3}>
-          <Card className="task-card task-card-body border-0 mt-3 d-flex justify-content-center">
+          <Card className="task-card task-card-body border-0 mt-3 d-flex justify-content-center rounded-5">
             <Card.Body>{filteredTask()}</Card.Body>
           </Card>
         </Col>
         {/* Recent Activities */}
         <Col xs={12} md={12} lg={4}>
-          <Card className="mt-3 task-card task-card-body border-0 overflow-y-auto">
-            <Card.Body>
-              <Card.Title className="fw-bold fs-3">Tasks Recenti</Card.Title>
+          <Card className="mt-3 task-card task-card-body border-0 overflow-y-auto rounded-5">
+            <Card.Body className="">
+              <Card.Title className=" fs-3">TASK RECENTI</Card.Title>
               {tasks
                 .filter((task) => task.done === true)
                 .map((task) => {
@@ -358,8 +358,8 @@ const HomePage = () => {
           className="mb-3 habits-card overflow-y-auto"
         >
           <Card className="border-0 ">
-            <Card.Body className="task-card-body">
-              <Card.Title className="fw-bold fs-3">Habits Tracker</Card.Title>
+            <Card.Body className="task-card-body rounded-5">
+              <Card.Title className="fs-3">HABITS TRACKER</Card.Title>
               {habits.map((habit) => {
                 return (
                   <Card
@@ -384,8 +384,8 @@ const HomePage = () => {
         </Col>
         {/* Grafico degli Habits */}
         <Col xs={12} md={12} lg={4} className="d-xs-none d-lg-block">
-          <Card className="border-0 habits-card ">
-            <Card.Body className="task-card-body">
+          <Card className="border-0 habits-card">
+            <Card.Body className="task-card-body rounded-5">
               {barChartHabits()}{" "}
             </Card.Body>
           </Card>
@@ -394,17 +394,15 @@ const HomePage = () => {
       <hr />
       {/* Parte dei Projects */}
       <Row>
-        <Col xs={12} md={12} lg={6}>
-          <Card className="habits-card overflow-y-auto">
+        <Col xs={12} md={12} lg={6} className="mb-5">
+          <Card className="habits-card overflow-y-auto border-0 rounded-5 rounded-end-0">
             <Card.Body className="task-card-body">
-              <Card.Title className="fw-bold fs-3">
-                Projects Managment
-              </Card.Title>
+              <Card.Title className=" fs-3">PROJECTS MANAGMENT</Card.Title>
               <Row>
                 {projects.slice(0, 2).map((project) => {
                   return (
                     <Col xs={12} md={12} lg={6} className="mt-3">
-                      <Card>
+                      <Card key={project.id}>
                         <Card.Title className="fw-bold fs-4 p-3 text-center">
                           {project.name}
                         </Card.Title>
