@@ -7,6 +7,7 @@ import {
   CDBSidebarFooter,
 } from "cdbreact";
 import "../css/SideBar.css";
+import { Link, useNavigate } from "react-router-dom";
 
 const SideBar = () => {
   return (
@@ -25,10 +26,18 @@ const SideBar = () => {
         </CDBSidebarMenu>
       </CDBSidebarContent>
 
-      <CDBSidebarFooter style={{ textAlign: "center" }}>
-        <div className="sidebar-btn-wrapper" style={{ padding: "20px 5px" }}>
-          Sidebar Footer
-        </div>
+      <CDBSidebarFooter>
+        <CDBSidebarMenuItem icon="arrow-left">
+          <Link
+            className="link-dark link-offset-2 link-underline-opacity-0"
+            to="/auth/login"
+            onClick={() => {
+              localStorage.removeItem("token");
+            }}
+          >
+            Logout
+          </Link>
+        </CDBSidebarMenuItem>
       </CDBSidebarFooter>
     </CDBSidebar>
   );
