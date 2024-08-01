@@ -104,12 +104,12 @@ const HomePage = () => {
   const handleAddTask = async () => {
     const taskObj = {
       name: nomeTask,
-      date: dataTask,
+      date: currentDate(),
     };
     console.log();
     await dispatch(addTasks(taskObj));
     setNomeTask("");
-    setDataTask("");
+    // setDataTask("");
     handleClose();
   };
 
@@ -389,6 +389,18 @@ const HomePage = () => {
         </Col>
       </Row>
       <hr />
+      {/* Parte dei Projects */}
+      <Row>
+        <Col xs={12} md={12} lg={6}>
+          <Card className="habits-card">
+            <Card.Body>
+              <Card.Title className="fw-bold fs-3">
+                Projects Managment
+              </Card.Title>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
 
       {/* Modale per la creazione di Task */}
       <Modal show={show} onHide={handleClose}>
@@ -418,7 +430,7 @@ const HomePage = () => {
             <Form.Control
               type="date"
               className="py-1"
-              value={!update ? dataTask : updateDataTask}
+              value={!update ? currentDate() : updateDataTask}
               onChange={(e) => {
                 !update
                   ? setDataTask(e.target.value)
