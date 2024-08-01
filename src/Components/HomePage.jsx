@@ -40,6 +40,7 @@ import {
 import { Bar, Doughnut } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
 import { checkHabits, getHabits } from "../redux/actions/habitsAction";
+import { deleteProjects, getProjects } from "../redux/actions/projectsAction";
 Chart.register(
   ArcElement,
   Tooltip,
@@ -57,6 +58,7 @@ const HomePage = () => {
   const habits = useSelector((state) => state.habits.content);
   const [idTask, setIdTask] = useState(0);
   const [update, setUpdate] = useState(false);
+  const projects = useSelector((state) => state.projects.content);
   //Modifica task done
   const handleCompleteTask = (nome, data, id) => {
     const doneTask = {
@@ -70,6 +72,7 @@ const HomePage = () => {
   //Funzioni per il modale di creazione Task
   const [show, setShow] = useState(false);
   const [nomeTask, setNomeTask] = useState("");
+  // eslint-disable-next-line no-unused-vars
   const [dataTask, setDataTask] = useState("");
   const [updateNameTask, setUpdateNameTask] = useState("");
   const [updateDataTask, setUpdateDataTask] = useState("");
@@ -213,7 +216,7 @@ const HomePage = () => {
     dispatch(getTasks());
     console.log(tasks);
     dispatch(getHabits());
-    currentDate();
+    dispatch(getProjects());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -392,17 +395,54 @@ const HomePage = () => {
       {/* Parte dei Projects */}
       <Row>
         <Col xs={12} md={12} lg={6}>
-          <Card className="habits-card">
-            <Card.Body>
+          <Card className="habits-card overflow-y-auto">
+            <Card.Body className="task-card-body">
               <Card.Title className="fw-bold fs-3">
                 Projects Managment
               </Card.Title>
+              <Row>
+                {projects.slice(0, 2).map((project) => {
+                  return (
+                    <Col xs={12} md={12} lg={6} className="mt-3">
+                      <Card>
+                        <Card.Title className="fw-bold fs-4 p-3 text-center">
+                          {project.name}
+                        </Card.Title>
+                        <Card.Body>
+                          {project.tasksList
+                            .filter((task) => task.done === false)
+                            .map((taskProject) => {
+                              return (
+                                <Card className="p-3 mb-2 d-flex flex-row justify-content-between">
+                                  {taskProject.name}
+                                  <Button
+                                    variant="outline-success"
+                                    onClick={() => {
+                                      handleCompleteTask(
+                                        taskProject.name,
+                                        taskProject.date,
+                                        taskProject.id
+                                      );
+                                    }}
+                                  >
+                                    {" "}
+                                    <CheckCircle size={20} />{" "}
+                                  </Button>
+                                </Card>
+                              );
+                            })}
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  );
+                })}
+              </Row>
             </Card.Body>
           </Card>
         </Col>
       </Row>
 
-      {/* Modale per la creazione di Task */}
+      {/* Modale per la creazione e modifica di Task */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton className="border-0">
           <Modal.Title>
