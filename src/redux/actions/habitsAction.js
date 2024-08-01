@@ -39,3 +39,62 @@ export const checkHabits = (habitObj, id) => {
     } catch (err) {}
   };
 };
+
+export const deleteHabit = (id) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      let response = await fetch(`http://localhost:3001/habits/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        dispatch(getHabits());
+      } else {
+        throw new Error((await response.json()).message);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+export const addHabit = (habitObj) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      let response = await fetch("http://localhost:3001/habits", {
+        method: "POST",
+        body: JSON.stringify(habitObj),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        dispatch(getHabits());
+      }
+    } catch (err) {}
+  };
+};
+
+export const updateHabit = (habitObj, id) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      let response = await fetch(`http://localhost:3001/habits/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify(habitObj),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        dispatch(getHabits());
+      }
+    } catch (err) {}
+  };
+};

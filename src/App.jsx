@@ -5,6 +5,7 @@ import SideBar from "./Components/SideBar";
 import LoginForm from "./Components/LoginForm";
 import RegisterForm from "./Components/RegisterForm";
 import HomePage from "./Components/HomePage";
+import Habits from "./Components/Habits";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/auth/login" element={<LoginForm />} />
           <Route path="/auth/register" element={<RegisterForm />} />
           <Route path="/" element={<HomePage />} />
+          <Route path="/habits" element={<Habits />} />
         </Routes>
       </BrowserRouter>
     </div>

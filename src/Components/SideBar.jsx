@@ -7,7 +7,7 @@ import {
   CDBSidebarFooter,
 } from "cdbreact";
 import "../css/SideBar.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const SideBar = () => {
   return (
@@ -17,9 +17,23 @@ const SideBar = () => {
       </CDBSidebarHeader>
       <CDBSidebarContent>
         <CDBSidebarMenu>
-          <CDBSidebarMenuItem icon="th-large"> Dashboard</CDBSidebarMenuItem>
+          <CDBSidebarMenuItem icon="th-large">
+            <Link
+              to="/"
+              className="link-dark link-offset-2 link-underline-opacity-0"
+            >
+              Dashboard
+            </Link>
+          </CDBSidebarMenuItem>
           <CDBSidebarMenuItem icon="sticky-note"> Tasks</CDBSidebarMenuItem>
-          <CDBSidebarMenuItem icon="chart-line"> Habits</CDBSidebarMenuItem>
+          <CDBSidebarMenuItem icon="chart-line">
+            <Link
+              className="link-dark link-offset-2 link-underline-opacity-0"
+              to="/habits"
+            >
+              Habits
+            </Link>
+          </CDBSidebarMenuItem>
           <CDBSidebarMenuItem icon="folder">
             Projects Manager
           </CDBSidebarMenuItem>
