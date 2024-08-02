@@ -6,6 +6,7 @@ import LoginForm from "./Components/LoginForm";
 import RegisterForm from "./Components/RegisterForm";
 import HomePage from "./Components/HomePage";
 import Habits from "./Components/Habits";
+import Tasks from "./Components/Tasks";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/auth/register" element={<RegisterForm />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/habits" element={<Habits />} />
+          <Route path="/tasks" element={<Tasks />} />
         </Routes>
       </BrowserRouter>
     </div>

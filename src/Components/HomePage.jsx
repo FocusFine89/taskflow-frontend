@@ -59,7 +59,7 @@ const HomePage = () => {
   const [idTask, setIdTask] = useState(0);
   const [update, setUpdate] = useState(false);
   const projects = useSelector((state) => state.projects.content);
-  //Modifica task done
+
   const handleCompleteTask = (nome, data, id) => {
     const doneTask = {
       name: nome,
@@ -208,7 +208,7 @@ const HomePage = () => {
     dispatch(checkHabits(habitObj, id));
   };
 
-  //Lo useEffect al caricamento del componente fa una get sulla lista delle Task per tenerla aggiornata
+  //Lo useEffect al caricamento del componente fa una get sulla lista delle Task, Habits e Projects per tenerle aggiornate
   useEffect(() => {
     if (!localStorage.getItem("token")) {
       navigate("/auth/register");
@@ -234,7 +234,6 @@ const HomePage = () => {
               </Card.Title>
               <Card.Text>
                 {/* Task ancora da fare per oggi */}
-                {/* TODO aggiungere il filtro per filtrare le task con la data di oggi e anche senza data */}
                 {tasks.length > 0 &&
                   tasks
                     .filter(

@@ -25,7 +25,15 @@ const SideBar = () => {
               Dashboard
             </Link>
           </CDBSidebarMenuItem>
-          <CDBSidebarMenuItem icon="sticky-note"> Tasks</CDBSidebarMenuItem>
+          <CDBSidebarMenuItem icon="sticky-note">
+            {" "}
+            <Link
+              to="/tasks"
+              className="link-dark link-offset-2 link-underline-opacity-0"
+            >
+              Tasks
+            </Link>
+          </CDBSidebarMenuItem>
           <CDBSidebarMenuItem icon="chart-line">
             <Link
               className="link-dark link-offset-2 link-underline-opacity-0"
