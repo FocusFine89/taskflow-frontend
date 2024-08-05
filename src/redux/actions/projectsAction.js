@@ -35,3 +35,22 @@ export const deleteProjects = (id) => {
     } catch (err) {}
   };
 };
+
+export const addTaskProject = (taskProjectObj, id) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      let response = await fetch(`http://localhost:3001/projects/${id}`, {
+        method: "POST",
+        body: JSON.stringify(taskProjectObj),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        dispatch(getProjects());
+      }
+    } catch (err) {}
+  };
+};
