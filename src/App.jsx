@@ -7,6 +7,7 @@ import RegisterForm from "./Components/RegisterForm";
 import HomePage from "./Components/HomePage";
 import Habits from "./Components/Habits";
 import Tasks from "./Components/Tasks";
+import Projects from "./Components/Projects";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/habits" element={<Habits />} />
           <Route path="/tasks" element={<Tasks />} />
+          <Route path="/projects" element={<Projects />} />
         </Routes>
       </BrowserRouter>
     </div>

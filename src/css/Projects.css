@@ -1,0 +1,9 @@
+.container-card {
+  width: calc(100vw - 80px);
+  margin-left: 80px;
+}
+
+.task-card {
+  max-width: 50rem;
+  height: 25rem;
+}

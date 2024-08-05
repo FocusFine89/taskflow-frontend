@@ -43,7 +43,12 @@ const SideBar = () => {
             </Link>
           </CDBSidebarMenuItem>
           <CDBSidebarMenuItem icon="folder">
-            Projects Manager
+            <Link
+              className="link-dark link-offset-2 link-underline-opacity-0"
+              to="/projects"
+            >
+              Projects Manager
+            </Link>
           </CDBSidebarMenuItem>
         </CDBSidebarMenu>
       </CDBSidebarContent>
