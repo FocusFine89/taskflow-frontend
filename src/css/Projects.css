@@ -7,3 +7,7 @@
   max-width: 50rem;
   height: 25rem;
 }
+
+.project-progress-bar {
+  width: 100%;
+}

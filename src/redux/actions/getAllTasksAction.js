@@ -1,3 +1,6 @@
+import { getHabits } from "./habitsAction";
+import { getProjects } from "./projectsAction";
+
 export const GET_TASKS = "GET_TASKS";
 
 export const getTasks = () => {
@@ -31,6 +34,7 @@ export const deleteTasks = (id) => {
       });
       if (response.ok) {
         dispatch(getTasks());
+        dispatch(getProjects());
       }
     } catch (error) {}
   };
@@ -73,6 +77,7 @@ export const completeTask = (doneObj, id) => {
       });
       if (response.ok) {
         dispatch(getTasks());
+        dispatch(getProjects());
       }
     } catch (error) {}
   };
@@ -92,6 +97,7 @@ export const updateTask = (taskObj, id) => {
       });
       if (response.ok) {
         dispatch(getTasks());
+        dispatch(getProjects());
       }
     } catch (error) {}
   };

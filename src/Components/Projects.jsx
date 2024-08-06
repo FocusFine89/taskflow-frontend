@@ -20,6 +20,10 @@ import {
   updateTask,
 } from "../redux/actions/getAllTasksAction";
 
+import { Bar } from "react-chartjs-2";
+import "chart.js/auto";
+import { getHabits } from "../redux/actions/habitsAction";
+
 const Projects = () => {
   const projects = useSelector((state) => state.projects.content);
   const dispatch = useDispatch();
@@ -28,7 +32,6 @@ const Projects = () => {
   const [idTaskProject, setIdTaskProject] = useState(0);
   const [updateNomeTaskProject, setUpdateNomeTaskProject] = useState("");
   const [updateDataTaskProject, setUpdateDataTaskProject] = useState("");
-  const [updateIdTaskProject, setUpdateIdTaskProject] = useState(0);
   const [update, setUpdate] = useState(false);
   const [show, setShow] = useState(false);
 
@@ -73,6 +76,7 @@ const Projects = () => {
     setUpdateNomeTaskProject("");
     setUpdateDataTaskProject("");
     setIdTaskProject(0);
+    await dispatch(getHabits());
     handleClose();
   };
 
@@ -86,10 +90,79 @@ const Projects = () => {
     dispatch(completeTask(taskProjectObj, id));
   };
 
+  //Funzione che mostra una Progress Bar per ogni progetto
+  const progressBar = (taskslist, width = 600, height = 10) => {
+    const completedTask = taskslist.filter(
+      (tasklist) => tasklist.done === true
+    ).length;
+    const remainingTask = taskslist.filter(
+      (tasklist) => tasklist.done === false
+    ).length;
+
+    const data = {
+      labels: ["Tasks"],
+      datasets: [
+        {
+          label: "Completed",
+          data: [completedTask],
+          backgroundColor: "rgba(75, 192, 192, 0.6)",
+          borderColor: "rgba(75, 192, 192, 1)",
+          borderWidth: 1,
+          borderSkipped: false,
+          borderRadius: 5,
+          barPercentage: 0.5,
+          categoryPercentage: 10,
+        },
+      ],
+    };
+    const options = {
+      indexAxis: "y",
+      layout: {
+        padding: 0,
+      },
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+      scales: {
+        x: {
+          max: completedTask + remainingTask,
+          min: 0,
+          grid: {
+            display: false,
+            drawBorder: false,
+          },
+          ticks: {
+            display: false,
+          },
+          border: {
+            display: false,
+          },
+        },
+        y: {
+          beginAtZero: true,
+          grid: {
+            display: false,
+            drawBorder: false,
+          },
+          ticks: {
+            display: false,
+          },
+          border: {
+            display: false,
+          },
+        },
+      },
+    };
+
+    return <Bar data={data} options={options} width={width} height={height} />;
+  };
+
   useEffect(() => {
     dispatch(getProjects());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [projects]);
+  }, []);
 
   return (
     <Container fluid className="container-card ">
@@ -98,7 +171,7 @@ const Projects = () => {
           return (
             <Col xs={12} md={12} lg={6}>
               <Card
-                className="task-card task-card-body border-0 rounded-5 overflow-y-auto"
+                className="task-card task-card-body border-0 rounded-5 overflow-y-auto mb-3"
                 key={project.id}
               >
                 <div className="d-flex justify-content-between">
@@ -112,126 +185,132 @@ const Projects = () => {
                     <PlusCircle size={25} />
                   </Button>
                 </div>
-                <Card.Body className="d-flex justify-content-around">
-                  <div className="w-100">
-                    <Card.Title>TASK DEL PROGETTO</Card.Title>
-                    {project.tasksList
-                      .filter((tasklist) => tasklist.done === false)
-                      .map((tasklist) => {
-                        return (
-                          <Card
-                            key={tasklist.id}
-                            className="my-3 flex-column-reverse"
-                          >
-                            <div className="m-3 text-end">
-                              <Button
-                                variant="outline-success"
-                                className="me-3"
-                                onClick={() =>
-                                  handleCompleteTask(
-                                    tasklist.name,
-                                    tasklist.date,
-                                    tasklist.id
-                                  )
-                                }
+                <div className="">{progressBar(project.tasksList)}</div>
+                <Card.Body className="">
+                  <Row>
+                    <Col xs={12} md={12} lg={6}>
+                      <div className="">
+                        <Card.Title>TASK DEL PROGETTO</Card.Title>
+                        {project.tasksList
+                          .filter((tasklist) => tasklist.done === false)
+                          .map((tasklist) => {
+                            return (
+                              <Card
+                                key={tasklist.id}
+                                className="my-3 flex-column-reverse"
                               >
-                                <CheckCircle size={20} />
-                              </Button>
+                                <div className="m-3 text-end d-flex justify-content-end">
+                                  <Button
+                                    variant="outline-success"
+                                    className="me-3"
+                                    onClick={() =>
+                                      handleCompleteTask(
+                                        tasklist.name,
+                                        tasklist.date,
+                                        tasklist.id
+                                      )
+                                    }
+                                  >
+                                    <CheckCircle size={20} />
+                                  </Button>
 
-                              <Button
-                                variant="outline-danger"
-                                className="me-3"
-                                onClick={() =>
-                                  dispatch(deleteTasks(tasklist.id))
-                                }
+                                  <Button
+                                    variant="outline-danger"
+                                    className="me-3"
+                                    onClick={() =>
+                                      dispatch(deleteTasks(tasklist.id))
+                                    }
+                                  >
+                                    {" "}
+                                    <Trash size={20} />{" "}
+                                  </Button>
+
+                                  <Button
+                                    variant="outline-warning"
+                                    onClick={() =>
+                                      handleShowUpdate(
+                                        tasklist.name,
+                                        tasklist.date,
+                                        tasklist.id
+                                      )
+                                    }
+                                  >
+                                    {" "}
+                                    <Pen size={20} />{" "}
+                                  </Button>
+                                </div>
+
+                                <Card.Body className="fs-5">
+                                  <div>
+                                    <Card.Text className="fw-bold">
+                                      {tasklist.name}
+                                    </Card.Text>
+                                    <Card.Text className="fs-6">
+                                      {" "}
+                                      <Badge bg="secondary">
+                                        {tasklist.date}
+                                      </Badge>{" "}
+                                    </Card.Text>
+                                    {tasklist.done && (
+                                      <Card.Text className="fs-6 text-success">
+                                        done
+                                      </Card.Text>
+                                    )}
+                                  </div>
+                                </Card.Body>
+                              </Card>
+                            );
+                          })}
+                      </div>
+                    </Col>
+                    <Col xs={12} md={12} lg={6}>
+                      <div key={project.id}>
+                        <Card.Title>TASK DEL PROGETTO FINITE</Card.Title>
+                        {project.tasksList
+                          .filter((tasklist) => tasklist.done === true)
+                          .map((tasklist) => {
+                            return (
+                              <Card
+                                key={tasklist.id}
+                                className="my-3 flex-column-reverse "
                               >
-                                {" "}
-                                <Trash size={20} />{" "}
-                              </Button>
+                                <div className="m-3 text-end">
+                                  <Button
+                                    variant="outline-danger"
+                                    className="me-3"
+                                    onClick={() =>
+                                      dispatch(deleteTasks(tasklist.id))
+                                    }
+                                  >
+                                    {" "}
+                                    <Trash size={20} />{" "}
+                                  </Button>
+                                </div>
 
-                              <Button
-                                variant="outline-warning"
-                                onClick={() =>
-                                  handleShowUpdate(
-                                    tasklist.name,
-                                    tasklist.date,
-                                    tasklist.id
-                                  )
-                                }
-                              >
-                                {" "}
-                                <Pen size={20} />{" "}
-                              </Button>
-                            </div>
-
-                            <Card.Body className="d-flex justify-content-between fs-5">
-                              <div>
-                                <Card.Text className="fw-bold">
-                                  {tasklist.name}
-                                </Card.Text>
-                                <Card.Text className="fs-6">
-                                  {" "}
-                                  <Badge bg="secondary">
-                                    {tasklist.date}
-                                  </Badge>{" "}
-                                </Card.Text>
-                                {tasklist.done && (
-                                  <Card.Text className="fs-6 text-success">
-                                    done
-                                  </Card.Text>
-                                )}
-                              </div>
-                            </Card.Body>
-                          </Card>
-                        );
-                      })}
-                  </div>
-
-                  <div className="w-100 " key={project.id}>
-                    <Card.Title>TASK DEL PROGETTO FINITE</Card.Title>
-                    {project.tasksList
-                      .filter((tasklist) => tasklist.done === true)
-                      .map((tasklist) => {
-                        return (
-                          <Card
-                            key={tasklist.id}
-                            className="my-3 flex-column-reverse "
-                          >
-                            <div className="m-3 text-end">
-                              <Button
-                                variant="outline-danger"
-                                className="me-3"
-                                onClick={() =>
-                                  dispatch(deleteTasks(tasklist.id))
-                                }
-                              >
-                                {" "}
-                                <Trash size={20} />{" "}
-                              </Button>
-                            </div>
-
-                            <Card.Body className="d-flex justify-content-between fs-5">
-                              <div>
-                                <Card.Text className="fw-bold">
-                                  {tasklist.name}
-                                </Card.Text>
-                                <Card.Text className="fs-6">
-                                  {" "}
-                                  <Badge bg="secondary">
-                                    {tasklist.date}
-                                  </Badge>{" "}
-                                </Card.Text>
-                                {tasklist.done && (
-                                  <Card.Text className="fs-6 text-success">
-                                    done
-                                  </Card.Text>
-                                )}
-                              </div>
-                            </Card.Body>
-                          </Card>
-                        );
-                      })}
-                  </div>
+                                <Card.Body className=" fs-5">
+                                  <div>
+                                    <Card.Text className="fw-bold">
+                                      {tasklist.name}
+                                    </Card.Text>
+                                    <Card.Text className="fs-6">
+                                      {" "}
+                                      <Badge bg="secondary">
+                                        {tasklist.date}
+                                      </Badge>{" "}
+                                    </Card.Text>
+                                    {tasklist.done && (
+                                      <Card.Text className="fs-6 text-success">
+                                        done
+                                      </Card.Text>
+                                    )}
+                                  </div>
+                                </Card.Body>
+                              </Card>
+                            );
+                          })}
+                      </div>
+                    </Col>
+                  </Row>
                 </Card.Body>
               </Card>
             </Col>
