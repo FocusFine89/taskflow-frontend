@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import {
   addTaskProject,
   createProject,
+  deleteProjects,
   getProjects,
 } from "../redux/actions/projectsAction";
 import { CheckCircle, Pen, PlusCircle, Trash } from "react-bootstrap-icons";
@@ -48,6 +49,11 @@ const Projects = () => {
     await dispatch(createProject(projectObj));
     setNomeProject("");
     handleClose2();
+  };
+
+  //Funzione per eliminare un Progetto
+  const handleDeleteProject = (id) => {
+    dispatch(deleteProjects(id));
   };
 
   //Funzioni per il modale di aggiunta e modifica tasks per Projects
@@ -208,12 +214,20 @@ const Projects = () => {
                   <Card.Title className="fs-3 text-center mt-3 ms-3">
                     {project.name}
                   </Card.Title>
-                  <Button
-                    variant="transparent"
-                    onClick={() => handleShow(project.id)}
-                  >
-                    <PlusCircle size={25} />
-                  </Button>
+                  <div className="me-4 mt-3">
+                    <Button
+                      variant="transparent"
+                      onClick={() => handleShow(project.id)}
+                    >
+                      <PlusCircle size={25} />
+                    </Button>
+                    <Button
+                      variant="transparent"
+                      onClick={() => handleDeleteProject(project.id)}
+                    >
+                      <Trash size={25} />
+                    </Button>
+                  </div>
                 </div>
                 <div className="">{progressBar(project.tasksList)}</div>
                 <Card.Body className="">
