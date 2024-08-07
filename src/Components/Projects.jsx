@@ -12,7 +12,11 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import "../css/Projects.css";
 import { useEffect, useState } from "react";
-import { addTaskProject, getProjects } from "../redux/actions/projectsAction";
+import {
+  addTaskProject,
+  createProject,
+  getProjects,
+} from "../redux/actions/projectsAction";
 import { CheckCircle, Pen, PlusCircle, Trash } from "react-bootstrap-icons";
 import {
   completeTask,
@@ -34,6 +38,17 @@ const Projects = () => {
   const [updateDataTaskProject, setUpdateDataTaskProject] = useState("");
   const [update, setUpdate] = useState(false);
   const [show, setShow] = useState(false);
+  const [nomeProject, setNomeProject] = useState("");
+
+  //Funzione per creare un Project
+  const handleCreateProject = async () => {
+    const projectObj = {
+      name: nomeProject,
+    };
+    await dispatch(createProject(projectObj));
+    setNomeProject("");
+    handleClose2();
+  };
 
   //Funzioni per il modale di aggiunta e modifica tasks per Projects
   const handleClose = () => {
@@ -50,6 +65,16 @@ const Projects = () => {
     setUpdateDataTaskProject(data);
     setIdTaskProject(id);
     setShow(true);
+  };
+
+  //Funzioni per il modale di creazione Progetti
+  const [show2, setShow2] = useState(false);
+  const handleShow2 = () => {
+    setShow2(true);
+  };
+
+  const handleClose2 = () => {
+    setShow2(false);
   };
 
   //Funzione per aggiungere una task al progetto
@@ -167,6 +192,11 @@ const Projects = () => {
   return (
     <Container fluid className="container-card ">
       <Row className="mt-3 ms-2">
+        <div className="mb-5">
+          <Button variant="outline-transparent" onClick={handleShow2}>
+            <PlusCircle size={30} />
+          </Button>
+        </div>
         {projects.map((project) => {
           return (
             <Col xs={12} md={12} lg={6}>
@@ -363,6 +393,38 @@ const Projects = () => {
             variant="success"
             onClick={!update ? handleAddTaskProject : handleUpdateTaskProject}
           >
+            SAVE
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Modale per la creazione dei Project*/}
+      <Modal show={show2} onHide={handleClose2}>
+        <Modal.Header closeButton className="border-0">
+          <Modal.Title>CREA UN PROGETTO</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="d-flex flex-column pb-0">
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Nome Progetto"
+            className="mb-3"
+          >
+            <Form.Control
+              type="text"
+              placeholder="Nome Progetto"
+              className="mb-3"
+              value={nomeProject}
+              onChange={(e) => {
+                setNomeProject(e.target.value);
+              }}
+            />
+          </FloatingLabel>
+        </Modal.Body>
+        <Modal.Footer className="border-0 pt-0">
+          <Button variant="danger" onClick={handleClose2}>
+            CLOSE
+          </Button>
+          <Button variant="success" onClick={handleCreateProject}>
             SAVE
           </Button>
         </Modal.Footer>
