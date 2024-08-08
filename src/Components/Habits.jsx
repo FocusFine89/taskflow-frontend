@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Card,
   Col,
@@ -30,6 +31,8 @@ import {
   CategoryScale,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { Link } from "react-router-dom";
+import ErrorAlert from "./ErrorAlert";
 Chart.register(
   ArcElement,
   Tooltip,
@@ -46,6 +49,7 @@ const Habits = () => {
   const [nomeHabit, setNomeHabit] = useState("");
   const [updateHabitName, setUpdateHabitName] = useState("");
   const [idHabit, setIdHabit] = useState(0);
+  const error = useSelector((state) => state.error.content);
 
   //Funzioni per il modale
   const [show, setShow] = useState(false);
@@ -141,6 +145,7 @@ const Habits = () => {
   }, []);
   return (
     <Container fluid className="container-card">
+      {error && <ErrorAlert />}
       <Row className="mt-3">
         <Col xs={12} md={12} lg={6} className="mb-3   ">
           <Card className="border-0">

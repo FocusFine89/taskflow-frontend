@@ -1,4 +1,5 @@
 import {
+  Alert,
   Badge,
   Button,
   Card,
@@ -28,6 +29,8 @@ import {
 import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
 import { getHabits } from "../redux/actions/habitsAction";
+import { Link } from "react-router-dom";
+import ErrorAlert from "./ErrorAlert";
 
 const Projects = () => {
   const projects = useSelector((state) => state.projects.content);
@@ -40,6 +43,7 @@ const Projects = () => {
   const [update, setUpdate] = useState(false);
   const [show, setShow] = useState(false);
   const [nomeProject, setNomeProject] = useState("");
+  const error = useSelector((state) => state.error.content);
 
   //Funzione per creare un Project
   const handleCreateProject = async () => {
@@ -197,6 +201,7 @@ const Projects = () => {
 
   return (
     <Container fluid className="container-card ">
+      {error && <ErrorAlert />}
       <Row className="mt-3 ms-2">
         <div className="mb-5">
           <Button variant="outline-transparent" onClick={handleShow2}>

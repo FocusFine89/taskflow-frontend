@@ -1,3 +1,5 @@
+import { GET_ERROR } from "./errorAction";
+
 export const GET_HABITS = "GET_HABITS";
 
 export const getHabits = () => {
@@ -53,6 +55,8 @@ export const deleteHabit = (id) => {
       if (response.ok) {
         dispatch(getHabits());
       } else {
+        let error = await response.json();
+        dispatch({ type: GET_ERROR, payload: error.message });
         throw new Error((await response.json()).message);
       }
     } catch (err) {
@@ -75,6 +79,10 @@ export const addHabit = (habitObj) => {
       });
       if (response.ok) {
         dispatch(getHabits());
+      } else {
+        let error = await response.json();
+        dispatch({ type: GET_ERROR, payload: error.message });
+        throw new Error((await response.json()).message);
       }
     } catch (err) {}
   };

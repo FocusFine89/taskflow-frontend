@@ -1,3 +1,5 @@
+import { GET_ERROR } from "./errorAction";
+
 export const GET_PROJECTS = "GET_PROJECTS";
 
 export const getProjects = () => {
@@ -31,6 +33,9 @@ export const deleteProjects = (id) => {
       });
       if (response.ok) {
         dispatch(getProjects());
+      } else {
+        let error = await response.json();
+        dispatch({ type: GET_ERROR, payload: error.message });
       }
     } catch (err) {}
   };
@@ -50,6 +55,8 @@ export const addTaskProject = (taskProjectObj, id) => {
       });
       if (response.ok) {
         dispatch(getProjects());
+      } else {
+        throw new Error((await response.json()).message);
       }
     } catch (err) {}
   };
@@ -69,6 +76,10 @@ export const createProject = (projectObj) => {
       });
       if (response.ok) {
         dispatch(getProjects());
+      } else {
+        let error = await response.json();
+        dispatch({ type: GET_ERROR, payload: error.message });
+        throw new Error((await response.json()).message);
       }
     } catch (err) {}
   };

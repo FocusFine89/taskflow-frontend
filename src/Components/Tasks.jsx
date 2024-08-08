@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import {
+  Alert,
   Badge,
   Button,
   Card,
@@ -20,9 +22,12 @@ import {
 } from "../redux/actions/getAllTasksAction";
 import { CheckCircle, Pen, PlusCircle, Trash } from "react-bootstrap-icons";
 import "../css/Tasks.css";
+import { Link } from "react-router-dom";
+import ErrorAlert from "./ErrorAlert";
 
 const Tasks = () => {
   const tasks = useSelector((state) => state.tasks.content);
+  const error = useSelector((state) => state.error.content);
   const dispatch = useDispatch();
   //tasks
   const [idTask, setIdTask] = useState(0);
@@ -162,10 +167,12 @@ const Tasks = () => {
 
   useEffect(() => {
     dispatch(getTasks());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <Container fluid className="container-card">
+      {error && <ErrorAlert />}
       <Row className="mt-3">
         <Col xs={12} md={12} lg={4}>
           <Card className="mb-4  border-0 overflow-auto taskPage-card rounded-5">

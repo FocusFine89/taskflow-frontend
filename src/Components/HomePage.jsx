@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  Alert,
   Badge,
   Button,
   Card,
@@ -38,9 +39,10 @@ import {
   CategoryScale,
 } from "chart.js";
 import { Bar, Doughnut } from "react-chartjs-2";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { checkHabits, getHabits } from "../redux/actions/habitsAction";
 import { getProjects } from "../redux/actions/projectsAction";
+import ErrorAlert from "./ErrorAlert";
 Chart.register(
   ArcElement,
   Tooltip,
@@ -59,6 +61,7 @@ const HomePage = () => {
   const [idTask, setIdTask] = useState(0);
   const [update, setUpdate] = useState(false);
   const projects = useSelector((state) => state.projects.content);
+  const error = useSelector((state) => state.error.content);
 
   const handleCompleteTask = (nome, data, id) => {
     const doneTask = {
@@ -222,6 +225,7 @@ const HomePage = () => {
 
   return (
     <Container fluid className="container-card">
+      {error && <ErrorAlert />}
       <Row>
         <Col xs={12} md={12} lg={3} className="mt-3">
           <Card className="task-card border-0 overflow-auto">
