@@ -77,7 +77,7 @@ const RegisterForm = () => {
           </Button>
           <Button disabled>
             <Facebook className="me-2" size={20} />
-            SIGN UP WHIT FACEBOOK
+            SIGN UP WITH FACEBOOK
           </Button>
           <div className="mt-4">
             Do you already have an account?
@@ -85,7 +85,6 @@ const RegisterForm = () => {
           </div>
         </Card.Body>
       </Card>
-      {name}
     </Container>
   );
 };
