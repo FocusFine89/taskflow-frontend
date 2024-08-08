@@ -1,8 +1,5 @@
-import { getHabits } from "./habitsAction";
 import { getProjects } from "./projectsAction";
-
 export const GET_TASKS = "GET_TASKS";
-
 export const getTasks = () => {
   return async (dispatch) => {
     const token = localStorage.getItem("token");

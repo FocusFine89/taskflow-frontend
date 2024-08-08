@@ -1,6 +1,7 @@
 export const registerAction = (userObj) => {
   return async (dispatch) => {
     try {
+      // eslint-disable-next-line no-unused-vars
       let response = await fetch("http://localhost:3001/auth/register", {
         method: "POST",
         body: JSON.stringify(userObj),
