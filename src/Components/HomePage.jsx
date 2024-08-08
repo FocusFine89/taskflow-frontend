@@ -356,7 +356,7 @@ const HomePage = () => {
           lg={6}
           className="mb-3 habits-card overflow-y-auto"
         >
-          <Card className="border-0 ">
+          <Card className="border-0 task-card ">
             <Card.Body className="task-card-body rounded-5">
               <Card.Title className="fs-3">HABITS TRACKER</Card.Title>
               {habits.map((habit) => {

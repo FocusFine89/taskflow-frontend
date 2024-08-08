@@ -155,15 +155,12 @@ const Habits = () => {
 
               {habits.map((habit) => {
                 return (
-                  <Card
-                    className="p-3 mt-3 d-flex flex-row justify-content-between"
-                    key={habit.id}
-                  >
+                  <Card className="p-3 mt-3 d-flex flex-column" key={habit.id}>
                     <Card.Text className="fs-4">{habit.name}</Card.Text>
-                    <div>
+                    <div className="d-flex justify-content-end">
                       <Button
                         variant="outline-success"
-                        className="me-3"
+                        className="me-3 button-size "
                         onClick={() => {
                           handleCheckHabits(habit.id);
                         }}
@@ -173,7 +170,7 @@ const Habits = () => {
                       </Button>
                       <Button
                         variant="outline-danger"
-                        className="me-3"
+                        className="me-3 button-size "
                         onClick={() => {
                           dispatch(deleteHabit(habit.id));
                         }}
@@ -183,6 +180,7 @@ const Habits = () => {
                       </Button>
                       <Button
                         variant="outline-warning"
+                        className="button-size "
                         onClick={() => {
                           handleShowUpdate(habit.name, habit.id);
                         }}
