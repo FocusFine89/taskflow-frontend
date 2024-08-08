@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  Alert,
   Badge,
   Button,
   Card,
@@ -39,7 +38,7 @@ import {
   CategoryScale,
 } from "chart.js";
 import { Bar, Doughnut } from "react-chartjs-2";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { checkHabits, getHabits } from "../redux/actions/habitsAction";
 import { getProjects } from "../redux/actions/projectsAction";
 import ErrorAlert from "./ErrorAlert";

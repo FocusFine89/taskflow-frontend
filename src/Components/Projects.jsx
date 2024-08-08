@@ -1,5 +1,4 @@
 import {
-  Alert,
   Badge,
   Button,
   Card,
@@ -29,7 +28,6 @@ import {
 import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
 import { getHabits } from "../redux/actions/habitsAction";
-import { Link } from "react-router-dom";
 import ErrorAlert from "./ErrorAlert";
 
 const Projects = () => {

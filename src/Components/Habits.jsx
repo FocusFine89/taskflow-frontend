@@ -1,5 +1,4 @@
 import {
-  Alert,
   Button,
   Card,
   Col,
@@ -31,7 +30,6 @@ import {
   CategoryScale,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { Link } from "react-router-dom";
 import ErrorAlert from "./ErrorAlert";
 Chart.register(
   ArcElement,
