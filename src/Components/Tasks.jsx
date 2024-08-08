@@ -668,6 +668,74 @@ const Tasks = () => {
           <Card className="mb-4  border-0 overflow-auto taskPage-card rounded-5">
             <Card.Body className="task-card-body">
               <Card.Title className="fs-4 d-flex flex-row justify-content-between">
+                TASK SENZA DATA{" "}
+                <Button variant="transparent" onClick={handleShow} className="">
+                  <PlusCircle size={25} />
+                </Button>
+              </Card.Title>
+              {tasks
+                .filter((task) => task.done === false && task.date === null)
+                .map((task) => {
+                  return (
+                    <Card key={task.id} className="my-3 flex-column-reverse">
+                      <div className="m-3 text-end">
+                        <Button
+                          variant="outline-success"
+                          onClick={() => {
+                            handleCompleteTask(task.name, task.date, task.id);
+                          }}
+                          className="me-3"
+                        >
+                          <CheckCircle size={20} />
+                        </Button>
+
+                        <Button
+                          variant="outline-danger"
+                          className="me-3"
+                          onClick={() => {
+                            dispatch(deleteTasks(task.id));
+                          }}
+                        >
+                          {" "}
+                          <Trash size={20} />{" "}
+                        </Button>
+
+                        <Button
+                          variant="outline-warning"
+                          onClick={() => {
+                            handleShowUpdate(task.name, task.date, task.id);
+                          }}
+                        >
+                          {" "}
+                          <Pen size={20} />{" "}
+                        </Button>
+                      </div>
+
+                      <Card.Body className="d-flex justify-content-between fs-5">
+                        <div>
+                          <Card.Text className="fw-bold">{task.name}</Card.Text>
+                          <Card.Text className="fs-6">
+                            {" "}
+                            <Badge bg="secondary">{task.date}</Badge>{" "}
+                          </Card.Text>
+                          {task.done && (
+                            <Card.Text className="fs-6 text-success">
+                              done
+                            </Card.Text>
+                          )}
+                        </div>
+                      </Card.Body>
+                    </Card>
+                  );
+                })}
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col xs={12} md={12} lg={4}>
+          <Card className="mb-4  border-0 overflow-auto taskPage-card rounded-5">
+            <Card.Body className="task-card-body">
+              <Card.Title className="fs-4 d-flex flex-row justify-content-between">
                 TUTTE LE TASK FATTE{" "}
                 <Button variant="transparent" onClick={handleShow} className="">
                   <PlusCircle size={25} />
