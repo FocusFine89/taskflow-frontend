@@ -1,15 +1,17 @@
-import { Button, Card, Container } from "react-bootstrap";
+import { Alert, Button, Card, Container } from "react-bootstrap";
 import "../css/LoginForm.css";
 import { Link, useNavigate } from "react-router-dom";
 import { Facebook, Google } from "react-bootstrap-icons";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginAction } from "../redux/actions/loginAction";
+import { DELETE_ERROR } from "../redux/actions/errorAction";
 const LoginForm = ({ onLogin }) => {
   const [userEmail, setEmail] = useState("");
   const [userPassword, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const error = useSelector((state) => state.error.content);
 
   const handleLogin = async () => {
     const userObj = {
@@ -21,6 +23,7 @@ const LoginForm = ({ onLogin }) => {
 
     if (localStorage.getItem("token")) {
       onLogin();
+      dispatch({ type: DELETE_ERROR, payload: "" });
       navigate("/");
     }
   };
@@ -33,7 +36,7 @@ const LoginForm = ({ onLogin }) => {
   }, []);
   return (
     <Container className="d-flex justify-content-center align-items-center m-0">
-      <Card style={{ width: "30rem", height: "30rem" }}>
+      <Card style={{ width: "30rem" }}>
         <Card.Body className="text-center my-3 d-flex flex-column">
           <Card.Title className="fs-2 fw-bold">Sign in</Card.Title>
           <input
@@ -57,6 +60,7 @@ const LoginForm = ({ onLogin }) => {
           <Button variant="dark" className="p-2 mb-2" onClick={handleLogin}>
             LOGIN
           </Button>
+          {error && <Alert variant="danger">{error}</Alert>}
           <hr />
           <Button variant="danger" className="my-2" disabled>
             <Google className="me-2" size={20} /> SIGN IN WITH GOOGLE

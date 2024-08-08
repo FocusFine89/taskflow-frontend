@@ -1,3 +1,5 @@
+import { GET_ERROR } from "./errorAction";
+
 export const ADD_USER = "ADD_USER";
 export const loginAction = (userObj) => {
   return async (dispatch) => {
@@ -14,6 +16,8 @@ export const loginAction = (userObj) => {
         localStorage.setItem("token", token.accesstoken);
         dispatch({ type: ADD_USER, payload: token.accesstoken });
       } else {
+        let error = await response.json();
+        dispatch({ type: GET_ERROR, payload: error.message });
         throw new Error((await response.json()).message);
       }
     } catch (err) {
