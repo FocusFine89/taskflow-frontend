@@ -13,9 +13,11 @@ export const loginAction = (userObj) => {
         let token = await response.json();
         localStorage.setItem("token", token.accesstoken);
         dispatch({ type: ADD_USER, payload: token.accesstoken });
+      } else {
+        throw new Error((await response.json()).message);
       }
-    } catch (response) {
-      throw new Error(response.message);
+    } catch (err) {
+      console.log(err);
     }
   };
 };
