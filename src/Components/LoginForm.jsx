@@ -5,7 +5,7 @@ import { Facebook, Google } from "react-bootstrap-icons";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginAction } from "../redux/actions/loginAction";
-const LoginForm = () => {
+const LoginForm = ({ onLogin }) => {
   const [userEmail, setEmail] = useState("");
   const [userPassword, setPassword] = useState("");
   const dispatch = useDispatch();
@@ -20,6 +20,7 @@ const LoginForm = () => {
     await dispatch(loginAction(userObj));
 
     if (localStorage.getItem("token")) {
+      onLogin();
       navigate("/");
     }
   };

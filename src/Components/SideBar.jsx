@@ -9,7 +9,11 @@ import {
 import "../css/SideBar.css";
 import { Link } from "react-router-dom";
 
-const SideBar = () => {
+const SideBar = ({ onLogout }) => {
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    onLogout();
+  };
   return (
     <CDBSidebar textColor="#333" backgroundColor="#f0f0f0">
       <CDBSidebarHeader prefix={<i className="fa fa-bars" />}>
@@ -59,7 +63,7 @@ const SideBar = () => {
             className="link-dark link-offset-2 link-underline-opacity-0"
             to="/auth/login"
             onClick={() => {
-              localStorage.removeItem("token");
+              handleLogout();
             }}
           >
             Logout
