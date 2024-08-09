@@ -1,4 +1,5 @@
 import { GET_ERROR } from "./errorAction";
+import { BASE_URL } from "./getAllTasksAction";
 
 export const GET_PROJECTS = "GET_PROJECTS";
 
@@ -6,7 +7,7 @@ export const getProjects = () => {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem("token");
-      let response = await fetch("http://localhost:3001/projects", {
+      let response = await fetch(`${BASE_URL}projects`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -25,7 +26,7 @@ export const deleteProjects = (id) => {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem("token");
-      let response = await fetch(`http://localhost:3001/projects/${id}`, {
+      let response = await fetch(`${BASE_URL}projects/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -45,7 +46,7 @@ export const addTaskProject = (taskProjectObj, id) => {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem("token");
-      let response = await fetch(`http://localhost:3001/projects/${id}`, {
+      let response = await fetch(`${BASE_URL}projects/${id}`, {
         method: "POST",
         body: JSON.stringify(taskProjectObj),
         headers: {
@@ -66,7 +67,7 @@ export const createProject = (projectObj) => {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem("token");
-      let response = await fetch("http://localhost:3001/projects", {
+      let response = await fetch(`${BASE_URL}projects`, {
         method: "POST",
         body: JSON.stringify(projectObj),
         headers: {

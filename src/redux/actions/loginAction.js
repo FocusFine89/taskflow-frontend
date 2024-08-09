@@ -1,10 +1,11 @@
 import { GET_ERROR } from "./errorAction";
+import { BASE_URL } from "./getAllTasksAction";
 
 export const ADD_USER = "ADD_USER";
 export const loginAction = (userObj) => {
   return async (dispatch) => {
     try {
-      let response = await fetch("http://localhost:3001/auth/login", {
+      let response = await fetch(`${BASE_URL}auth/login`, {
         method: "POST",
         body: JSON.stringify(userObj),
         headers: {

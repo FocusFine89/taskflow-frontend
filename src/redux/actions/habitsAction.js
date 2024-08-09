@@ -1,4 +1,5 @@
 import { GET_ERROR } from "./errorAction";
+import { BASE_URL } from "./getAllTasksAction";
 
 export const GET_HABITS = "GET_HABITS";
 
@@ -6,7 +7,7 @@ export const getHabits = () => {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem("token");
-      let response = await fetch("http://localhost:3001/habits", {
+      let response = await fetch(`${BASE_URL}habits`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -27,7 +28,7 @@ export const checkHabits = (habitObj, id) => {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem("token");
-      let response = await fetch(`http://localhost:3001/habits/days/${id}`, {
+      let response = await fetch(`${BASE_URL}habits/days/${id}`, {
         method: "PATCH",
         body: JSON.stringify(habitObj),
         headers: {
@@ -46,7 +47,7 @@ export const deleteHabit = (id) => {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem("token");
-      let response = await fetch(`http://localhost:3001/habits/${id}`, {
+      let response = await fetch(`${BASE_URL}habits/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -69,7 +70,7 @@ export const addHabit = (habitObj) => {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem("token");
-      let response = await fetch("http://localhost:3001/habits", {
+      let response = await fetch(`${BASE_URL}habits`, {
         method: "POST",
         body: JSON.stringify(habitObj),
         headers: {
@@ -92,7 +93,7 @@ export const updateHabit = (habitObj, id) => {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem("token");
-      let response = await fetch(`http://localhost:3001/habits/${id}`, {
+      let response = await fetch(`${BASE_URL}habits/${id}`, {
         method: "PATCH",
         body: JSON.stringify(habitObj),
         headers: {

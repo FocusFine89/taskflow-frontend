@@ -1,11 +1,12 @@
 import { GET_ERROR } from "./errorAction";
 import { getProjects } from "./projectsAction";
 export const GET_TASKS = "GET_TASKS";
+export const BASE_URL = "equivalent-tobey-focusfine89-ac280773.koyeb.app/";
 export const getTasks = () => {
   return async (dispatch) => {
     const token = localStorage.getItem("token");
     try {
-      let response = await fetch("http://localhost:3001/tasks", {
+      let response = await fetch(`${BASE_URL}tasks`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -24,7 +25,7 @@ export const deleteTasks = (id) => {
   const token = localStorage.getItem("token");
   return async (dispatch) => {
     try {
-      let response = await fetch(`http://localhost:3001/tasks/${id}`, {
+      let response = await fetch(`${BASE_URL}tasks/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -45,7 +46,7 @@ export const addTasks = (taskObj) => {
   return async (dispatch) => {
     const token = localStorage.getItem("token");
     try {
-      let response = await fetch("http://localhost:3001/tasks/create", {
+      let response = await fetch(`${BASE_URL}tasks/create`, {
         method: "POST",
         body: JSON.stringify(taskObj),
         headers: {
@@ -70,7 +71,7 @@ export const completeTask = (doneObj, id) => {
   const token = localStorage.getItem("token");
   return async (dispatch) => {
     try {
-      let response = await fetch(`http://localhost:3001/tasks/${id}`, {
+      let response = await fetch(`${BASE_URL}tasks/${id}`, {
         method: "POST",
         body: JSON.stringify(doneObj),
         headers: {
@@ -90,7 +91,7 @@ export const updateTask = (taskObj, id) => {
   const token = localStorage.getItem("token");
   return async (dispatch) => {
     try {
-      let response = await fetch(`http://localhost:3001/tasks/${id}`, {
+      let response = await fetch(`${BASE_URL}tasks/${id}`, {
         method: "POST",
         body: JSON.stringify(taskObj),
         headers: {

@@ -1,8 +1,10 @@
+import { BASE_URL } from "./getAllTasksAction";
+
 export const registerAction = (userObj) => {
   return async (dispatch) => {
     try {
       // eslint-disable-next-line no-unused-vars
-      let response = await fetch("http://localhost:3001/auth/register", {
+      let response = await fetch(`${BASE_URL}auth/register`, {
         method: "POST",
         body: JSON.stringify(userObj),
         headers: {
