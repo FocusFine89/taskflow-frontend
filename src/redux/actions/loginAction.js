@@ -5,13 +5,16 @@ export const ADD_USER = "ADD_USER";
 export const loginAction = (userObj) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(`${BASE_URL}auth/login`, {
-        method: "POST",
-        body: JSON.stringify(userObj),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      let response = await fetch(
+        `equivalent-tobey-focusfine89-ac280773.koyeb.app/auth/login`,
+        {
+          method: "POST",
+          body: JSON.stringify(userObj),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (response.ok) {
         let token = await response.json();
         localStorage.setItem("token", token.accesstoken);
