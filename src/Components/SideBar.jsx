@@ -15,7 +15,11 @@ const SideBar = ({ onLogout }) => {
     onLogout();
   };
   return (
-    <CDBSidebar textColor="#333" backgroundColor="#f0f0f0">
+    <CDBSidebar
+      textColor="#333"
+      backgroundColor="#f0f0f0"
+      className="sideBarImportant"
+    >
       <CDBSidebarHeader prefix={<i className="fa fa-bars" />}>
         Task-Flow
       </CDBSidebarHeader>
