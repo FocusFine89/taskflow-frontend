@@ -5,7 +5,7 @@ export const loginAction = (userObj) => {
   return async (dispatch) => {
     try {
       let response = await fetch(
-        `https://equivalent-tobey-focusfine89-ac280773.koyeb.app/auth/login`,
+        "https://equivalent-tobey-focusfine89-ac280773.koyeb.app/auth/login",
         {
           method: "POST",
           body: JSON.stringify(userObj),
