@@ -1,5 +1,4 @@
 import { GET_ERROR } from "./errorAction";
-import { BASE_URL } from "./getAllTasksAction";
 
 export const ADD_USER = "ADD_USER";
 export const loginAction = (userObj) => {
