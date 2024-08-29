@@ -1,7 +1,7 @@
 import { GET_ERROR } from "./errorAction";
 import { getProjects } from "./projectsAction";
 export const GET_TASKS = "GET_TASKS";
-export const BASE_URL = "equivalent-tobey-focusfine89-ac280773.koyeb.app/";
+export const BASE_URL = "http://localhost:3001/"; //equivalent-tobey-focusfine89-ac280773.koyeb.app/
 export const getTasks = () => {
   return async (dispatch) => {
     const token = localStorage.getItem("token");
